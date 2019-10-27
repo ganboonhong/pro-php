@@ -8,9 +8,6 @@ require ROOT_DIR . '/vendor/autoload.php';
 
 $request = \Symfony\Component\HttpFoundation\Request::createFromGlobals();
 
-$controller = new \SocialNews\FrontPage\Presentation\FrontPageController($request);
-$response = $controller->show($request);
-
 $dispatcher = \FastRoute\simpleDispatcher(
     function (\FastRoute\RouteCollector $r) {
         $routes = include (ROOT_DIR . '/src/Routes.php');
@@ -41,8 +38,13 @@ switch ($routeInfo[0]) {
     case \FastRoute\Dispatcher::FOUND:
         [$controllerName, $method] = explode('#', $routeInfo[1]);
         $vars = $routeInfo[2];
+        $injector = include 'Dependencies.php';
 
-        $controller = new $controllerName;
+        // $factory = new SocialNews\Framework\Rendering\TwigTemplateRendererFactory();
+        // $templateRenderer = $factory->create();
+
+        // $controller = new $controllerName($templateRenderer);
+        $controller = $injector->make($controllerName);
         $response = $controller->$method($request, $vars);
         break;
 }
