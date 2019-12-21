@@ -2,6 +2,8 @@
 
 use Auryn\Injector;
 use Doctrine\DBAL\Connection;
+use SocialNews\Framework\Csrf\SymfonySessionTokenStorage;
+use SocialNews\Framework\Csrf\TokenStorage;
 use SocialNews\Framework\Dbal\ConnectionFactory;
 use SocialNews\Framework\Dbal\DatabaseUrl;
 use SocialNews\Framework\Rendering\TemplateDirectory;
@@ -9,6 +11,8 @@ use SocialNews\Framework\Rendering\TemplateRenderer;
 use SocialNews\Framework\Rendering\TwigTemplateRendererFactory;
 use SocialNews\FrontPage\Application\SubmissionQuery;
 use SocialNews\FrontPage\Infrastructure\DbalSubmissionsQuery;
+use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 $injector = new Injector();
 
@@ -23,6 +27,9 @@ $injector->delegate(
 $injector->define(TemplateDirectory::class, [':rootDirectory' => ROOT_DIR]);
 
 $injector->alias(SubmissionQuery::class, DbalSubmissionsQuery::class);
+$injector->alias(TokenStorage::class, SymfonySessionTokenStorage::class);
+$injector->alias(SessionInterface::class, Session::class);
+
 $injector->share(SubmissionQuery::class);
 
 $injector->define(
