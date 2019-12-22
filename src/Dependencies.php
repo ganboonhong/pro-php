@@ -11,6 +11,8 @@ use SocialNews\Framework\Rendering\TemplateRenderer;
 use SocialNews\Framework\Rendering\TwigTemplateRendererFactory;
 use SocialNews\FrontPage\Application\SubmissionQuery;
 use SocialNews\FrontPage\Infrastructure\DbalSubmissionsQuery;
+use SocialNews\Submission\Domain\SubmissionRepository;
+use SocialNews\Submission\Infrastructure\DbalSubmissionRepository;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
@@ -29,6 +31,7 @@ $injector->define(TemplateDirectory::class, [':rootDirectory' => ROOT_DIR]);
 $injector->alias(SubmissionQuery::class, DbalSubmissionsQuery::class);
 $injector->alias(TokenStorage::class, SymfonySessionTokenStorage::class);
 $injector->alias(SessionInterface::class, Session::class);
+$injector->alias(SubmissionRepository::class, DbalSubmissionRepository::class);
 
 $injector->share(SubmissionQuery::class);
 
