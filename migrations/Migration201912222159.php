@@ -16,6 +16,9 @@ final class Migration201912222159
 
     public function migrate(): void
     {
+        $dropStmt = $this->connection->prepare('DROP TABLE IF EXISTS users');
+        $dropStmt->execute();
+
         $schema = new Schema();
         $this->createUserTable($schema);
 
@@ -32,10 +35,10 @@ final class Migration201912222159
         $table->addColumn('nickname', Type::STRING);
         $table->addColumn('password_hash', Type::STRING);
         $table->addColumn('creation_date', Type::DATETIME);
-        $table->addColumn('failed_login_attemps', Type::INTEGER, [
+        $table->addColumn('failed_login_attempts', Type::INTEGER, [
             'default' => 0,
         ]);
-        $table->addColumn('last_failed_login_attemps', Type::DATETIME, [
+        $table->addColumn('last_failed_login_attempt', Type::DATETIME, [
             'notnull' => false,
         ]);
     }

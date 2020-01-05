@@ -19,6 +19,9 @@ final class Migration201911232034
 
     public function migrate(): void
     {
+        $dropStmt = $this->connection->prepare('DROP TABLE IF EXISTS submissions');
+        $dropStmt->execute();
+
         $schema = new Schema();
         $this->createSubmissionTable($schema);
 
